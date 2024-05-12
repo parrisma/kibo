@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kibo-cert
+spec:
+  secretName: kibo-seflsigned-tls-secret
+  issuerRef:
+    name: kibo-selfsigned-cert-issuer
+    kind: Issuer
+  dnsNames:
+    - kibo.org
