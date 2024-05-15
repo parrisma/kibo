@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+spec:
+  ingressClassName: nginx-ingress-class
+  rules:
+    - host: kibo.org # A locally defined hostname
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/app1"
+            backend:
+              service:
+                name: nginx-svc-1
+                port:
+                  number: 1234 # The port number exposed by the service, not necessarily the container port
+          - pathType: Prefix
+            path: "/app2"
+            backend:
+              service:
+                name: nginx-svc-2
+                port:
+                  number: 1234 # The port number exposed by the service, not necessarily the container port
