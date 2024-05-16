@@ -1,18 +1,24 @@
-# Authorisation Setup
+# Authorization Setup
 
 ## Self Signed Certs
 
 In Ubuntu
 
 ```openssl genrsa -out kibo.key 4096```
-```openssl req -new -x509 -sha256 -days 10950 -key server.key -out kibo.crt  ```
+```openssl req -new -x509 -sha256 -addext "subjectAltName = DNS:kibo.org" -days 10950 -key kibo.key -out kibo.crt```
+```cat kibo.key | base64 -w 0 > SingleLineKey``
+```cat kibo.crt | base64 -w 0 > SingleLineCrt``
+
+Validate SAN name with
+
+```openssl x509 -in kibo.crt -noout -text | grep Alternative```
 
 On Ubuntu
 ```$ sudo cp kibo.crt /etc/ssl/certs```
 ```$ sudo cp kibo.key /etc/ssl/private```
 
 On Windows
-Double click crt to import into Windows
+Double click crt to import into Windows, put specifically into ```Root Cert Auth.```
 
 ### Create Kube secret using 1-line base 64 encoding
 

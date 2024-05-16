@@ -1,7 +1,7 @@
 param (
     [string]$ns = "kibo",
-    [bool]$delete = $false,
-    [bool]$apply = $false
+    [bool]$delete = $true,
+    [bool]$apply = $true
 )
 
 . ..\..\devops\powershell\kibo-util.ps1
