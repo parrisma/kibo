@@ -26,3 +26,7 @@ Ingress makes KeyCloak available in browser at URL below on machine (localhost) 
 ## Demo set-up of https
 
 [here](https://github.com/marcel-dempers/docker-development-youtube-series/blob/master/kubernetes/ingress/ingress.yaml)
+
+## Test via port forward
+
+```kubectl port-forward service/keycloak-svc 8443:80 -n kibo```

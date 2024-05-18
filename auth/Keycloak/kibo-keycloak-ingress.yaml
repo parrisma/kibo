@@ -1,20 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: keycloak
+  name: keycloak-ingress
 spec:
+  ingressClassName: nginx-ingress-class
   tls:
     - hosts:
         - kibo.org
-      secretName: tls-secret
+      secretName: kibo-selfsigned-cert-secret # Set-up here auth\cert\kibo-selfsigned-cert-secret.yaml
   rules:
-    - host: kibo.org
+    - host: kibo.org # A locally defined hostname
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - pathType: Prefix
+            path: "/"
             backend:
               service:
-                name: keycloak
+                name: keycloak-svc
                 port:
-                  number: 80
+                  number: 80 # The port number exposed by the service, not necessarily the container port

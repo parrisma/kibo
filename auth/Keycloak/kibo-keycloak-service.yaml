@@ -1,17 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: keycloak
-  labels:
-    app: keycloak
+  name: keycloak-svc
 spec:
   ports:
-    - name: http
+    - name: keycloak-svc-http
       port: 80
-      targetPort: http
-    - name: https
+      targetPort: keycloak-http
+    - name: keycloak-svc-https
       port: 443
-      targetPort: https
+      targetPort: keycloak-https
   selector:
-    app: keycloak
+    suite: keycloak-suite
   type: ClusterIP

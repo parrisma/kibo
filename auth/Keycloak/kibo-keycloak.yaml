@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: keycloak
+        suite: keycloak-suite
     spec:
       containers:
         - name: keycloak
@@ -47,7 +48,7 @@ spec:
                   name: postgres-credentials
                   key: POSTGRES_DB
             - name: KC_DB_URL
-              value: jdbc:postgresql://postgres/$(POSTGRES_DB)
+              value: jdbc:postgresql://postgres-svc/$(POSTGRES_DB)
             - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -59,9 +60,9 @@ spec:
                   name: postgres-credentials
                   key: POSTGRES_PASSWORD
           ports:
-            - name: http
+            - name: keycloak-http
               containerPort: 8080
-            - name: https
+            - name: keycloak-https
               containerPort: 443
           readinessProbe:
             httpGet:
