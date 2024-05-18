@@ -15,17 +15,16 @@ spec:
     spec:
       containers:
         - name: postgres-db
-          image: postgres:16.2
+          image: {{ .Values.keycloak.postgres.statefulset.image }}:{{ .Values.keycloak.postgres.statefulset.tag }}
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
-              subPath: db
           envFrom:
             - secretRef:
                 name: postgres-credentials
           env:
             - name: PGDATA
-              value: /data/pgdata
+              value: /var/lib/postgresql/data/db
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:

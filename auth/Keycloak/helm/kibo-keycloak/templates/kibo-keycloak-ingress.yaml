@@ -6,10 +6,10 @@ spec:
   ingressClassName: nginx-ingress-class
   tls:
     - hosts:
-        - kibo.org
+        - {{ .Values.domain }}
       secretName: kibo-selfsigned-cert-secret # Set-up here auth\cert\kibo-selfsigned-cert-secret.yaml
   rules:
-    - host: kibo.org # A locally defined hostname
+    - host: {{ .Values.domain }} # A locally defined hostname
       http:
         paths:
           - pathType: Prefix

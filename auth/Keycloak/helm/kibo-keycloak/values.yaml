@@ -1,0 +1,24 @@
+# This file contains the default values for the Keycloak Helm chart.
+
+# Suite Name
+name: kibo
+
+# Operating Domain
+domain: kibo.org
+
+postgres:
+  statefulset:
+    image: postgres
+    tag: 16.2
+
+# Default values for Keycloak.
+keycloak:
+  deployment:
+    image: quay.io/keycloak/keycloak
+    tag: 21.0.2
+  postgres:
+    statefulset:
+      image: postgres
+      tag: 16.2
+
+

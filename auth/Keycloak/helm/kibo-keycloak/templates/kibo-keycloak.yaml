@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: quay.io/keycloak/keycloak:21.0.2
+          image: {{ .Values.keycloak.deployment.image }}:{{ .Values.keycloak.deployment.tag }}
           args: ["start-dev"]
           env:
             - name: KEYCLOAK_ADMIN
