@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "kibo-keycloak.name" -}}
+{{- define "kibo-certs.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "kibo-keycloak.fullname" -}}
+{{- define "kibo-certs.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "kibo-keycloak.chart" -}}
+{{- define "kibo-certs.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "kibo-keycloak.labels" -}}
-helm.sh/chart: {{ include "kibo-keycloak.chart" . }}
-{{ include "kibo-keycloak.selectorLabels" . }}
+{{- define "kibo-certs.labels" -}}
+helm.sh/chart: {{ include "kibo-certs.chart" . }}
+{{ include "kibo-certs.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "kibo-keycloak.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "kibo-keycloak.name" . }}
+{{- define "kibo-certs.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "kibo-certs.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "kibo-keycloak.serviceAccountName" -}}
+{{- define "kibo-certs.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "kibo-keycloak.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "kibo-certs.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

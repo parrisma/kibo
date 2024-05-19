@@ -22,3 +22,7 @@ Run from windows power shell started as admin
 
 [helpful](https://phoenixnap.com/kb/install-helm)
 [help2](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html)
+
+## Local mounts
+
+```/run/desktop/mnt/host/c/Users/parri```
