@@ -9,7 +9,14 @@ spec:
     - name: cert-status-test
       image: bitnami/kubectl:latest
       command: ["kubectl"]
-      args: ["get","cert","kibo-cert","-n","kibo","-o","jsonpath='{.status.conditions[0].status}'"]
+      args:
+        - wait
+        - --for
+        - jsonpath={.status.conditions[].status}=False
+        - cert/kibo-cert
+        - -n
+        - kibo
+        - --timeout=5s
       volumeMounts:
         - name: kube-conf-volumn
           mountPath: /.kube/config
