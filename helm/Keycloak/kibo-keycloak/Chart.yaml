@@ -22,3 +22,11 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.0.0"
+
+#
+# Key cloak needs the TLS certs to be installed in the same namespace before it can be installed
+#
+dependencies:
+  - name: kibo-certs
+    version: "1.0.0"
+    repository: "file://../../cert/kibo-certs"

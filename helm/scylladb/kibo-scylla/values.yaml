@@ -1,0 +1,14 @@
+# Default values for kibo-scylla.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Suite Name
+name: kibo
+
+# Operating Domain
+domain: kibo.org
+
+scylla:
+  statefulset:
+    image: scylladb
+    tag: scylla:5.2.0

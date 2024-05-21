@@ -5,14 +5,14 @@ metadata:
   annotations:
     "helm.sh/hook": test
 spec:
-  containers:
+  containers: # Will return error code on timeout if the cert is not ready which will be detected by the helm test as a fail.
     - name: cert-status-test
-      image: bitnami/kubectl:latest
+      image: {{ .Values.kubectl_image }}
       command: ["kubectl"]
       args:
         - wait
         - --for
-        - jsonpath={.status.conditions[].status}=False
+        - jsonpath={.status.conditions[].status}=True
         - cert/kibo-cert
         - -n
         - kibo
@@ -23,8 +23,9 @@ spec:
   volumes:
   - name: kube-conf-volumn
     hostPath:
-      path: /run/desktop/mnt/host/c/Users/parri/.kube/config
+      path: {{ .Values.kubeconfig_root }}{{ .Values.kubeconfig_user }}{{ .Values.kubeconfig_file }}
       type: File
   restartPolicy: Never
+
 
   

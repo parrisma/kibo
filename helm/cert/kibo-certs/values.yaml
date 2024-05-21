@@ -7,3 +7,11 @@ name: kibo
 
 # Operating Domain
 domain: kibo.org
+
+# Kube config location
+kubeconfig_root: /run/desktop/mnt/host/c/Users # Docker Desktop specific path
+kubeconfig_user: /parri
+kubeconfig_file: /.kube/config
+
+# Bitnami Kubectl image for chart testing
+kubectl_image: bitnami/kubectl:1.27.14
