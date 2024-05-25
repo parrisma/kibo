@@ -12,3 +12,4 @@ scylla:
   statefulset:
     image: scylladb
     tag: scylla:5.2.0
+  host_mount_path: /run/desktop/mnt/scylla # Docker Desktop specific path

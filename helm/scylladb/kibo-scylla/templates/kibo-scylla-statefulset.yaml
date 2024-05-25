@@ -5,7 +5,7 @@ metadata:
   labels:
     app: scylla
 spec:
-  serviceName: scylla
+  serviceName: scylla-svc
   replicas: 3
   selector:
     matchLabels:
@@ -15,11 +15,13 @@ spec:
       labels:
         app: scylla
     spec:
+      sysctls:
+      - "fs.aio-max-nr=1048576"
       containers:
         - name: scylla
           image: scylladb/scylla:5.2.0
           imagePullPolicy: IfNotPresent
-          args: ["--seeds", "scylla-0.scylla.kibo.svc.cluster.local", "--smp", "1"] # Format <setname>-n.<service-name>.<namespace>.svc.cluster.local
+          args: ["--seeds", "scylla-0.scylla-svc.kibo.svc.cluster.local", "--smp", "1"] # Format <setname>-n.<service-name>.<namespace>.svc.cluster.local
           ports:
             - containerPort: 7000
               name: intra-node
@@ -69,10 +71,16 @@ spec:
             - name: scylla-ready-probe
               mountPath: /opt/ready-probe.sh
               subPath: ready-probe.sh
+            - name: scylla-conf
+              mountPath: /etc/scylla/scylla.yaml
+              subPath: scylla.yaml
       volumes:
         - name: scylla-ready-probe
           configMap:
-            name: scylla
+            name: kibo-scylla-ready-probe
+        - name: scylla-conf
+          configMap:
+            name: kibo-scylla-conf
   volumeClaimTemplates:
     - metadata:
         name: scylla-data-volume

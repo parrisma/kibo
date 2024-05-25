@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: scylla-ingress
+spec:
+  ingressClassName: nginx-ingress-class
+  tls:
+    - hosts:
+        - kibo.org
+      secretName: kibo-selfsigned-cert-secret # Set-up here auth\cert\kibo-selfsigned-cert-secret.yaml
+  rules:
+    - host: kibo.org
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/scylla"
+            backend:
+              service:
+                name: scylla-svc
+                port:
+                  number: 9042 # The port number exposed by the service, not necessarily the container port

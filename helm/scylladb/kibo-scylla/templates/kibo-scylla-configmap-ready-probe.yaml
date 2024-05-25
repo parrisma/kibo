@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: scylla
+  name: kibo-scylla-ready-probe
 data:
   ready-probe.sh: |
     #!/bin/bash
