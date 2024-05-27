@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tcp-port-svc
+  labels:
+    app: tcp-port-deployment
+spec:
+  clusterIP: None
+  ports:
+    - port: 3142
+      name: test-port
+  selector:
+    app: tcp-port-deployment
