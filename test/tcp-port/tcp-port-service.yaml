@@ -3,11 +3,12 @@ kind: Service
 metadata:
   name: tcp-port-svc
   labels:
-    app: tcp-port-deployment
+    app: tcp-port
 spec:
-  clusterIP: None
+  type: LoadBalancer
   ports:
     - port: 3142
-      name: test-port
+      targetPort: 3142
+      name: tcp-port
   selector:
-    app: tcp-port-deployment
+    app: tcp-port

@@ -19,9 +19,8 @@ spec:
           args:
             - "-c"
             - |
-              while true; do
-                sleep 10
-              done
+              echo "..."
+              python /etc/echo-port.py
           resources:
             limits:
               cpu: 500m

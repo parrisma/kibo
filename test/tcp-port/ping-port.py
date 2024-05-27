@@ -19,19 +19,22 @@ MSG = str(sys.argv[4] if len(sys.argv) > 4 else "Hello World!")
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
-    print('Ping server started') if VERBOSE else None
+    print('Ping server started', flush=True) if VERBOSE else None
     print('connecting to [%s] on [port] %d' %
-          (HOST, PORT,)) if VERBOSE else None
+          (HOST, PORT,), flush=True) if VERBOSE else None
     s.connect((HOST, PORT))
     if VERBOSE:
-        print('sending [%s] to server' % (MSG,))
+        print('sending [%s] to server' % (MSG,), flush=True)
     else:
-        print('%s' % (MSG,))
+        print('[send - %s]' % (MSG,), flush=True)
     s.sendall(MSG.encode('utf-8'))
-    print('Ping server done') if VERBOSE else None
+    print('Ping server done', flush=True) if VERBOSE else None
+    reply = s.recv(1024).decode('utf-8')
+    print('[%s]' % (reply,), flush=True)
 except Exception as e:
-    print('Error [%s]' % (e,))
+    print('Error [%s]' % (e,), flush=True)
     exit(1)
 finally:
     s.close()
-    print('Ping server, all connections closed') if VERBOSE else None
+    print('Ping server, all connections closed',
+          flush=True) if VERBOSE else None
