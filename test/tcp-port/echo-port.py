@@ -30,8 +30,10 @@ try:
             print('received [%s]' % (data,), flush=True)
         else:
             print('%s' % (data.decode('utf-8'),), flush=True)
-        print('Echoing [%s] to sender' % (data,), flush=True) if VERBOSE else None
-        reply = "echo - " + data.decode('utf-8')
+        print('Echoing [%s] to sender' %
+              (data,), flush=True) if VERBOSE else None
+        reply = "echo - " + \
+            data.decode('utf-8') + " from host [" + socket.gethostname() + "]"
         conn.sendall(reply.encode('utf-8'))
         print('Echo server done', flush=True) if VERBOSE else None
         time.sleep(1)
@@ -45,4 +47,3 @@ finally:
     print('Echo server, all connections closed',
           flush=True) if VERBOSE else None
     exit(0)
-

@@ -1,0 +1,2 @@
+kubectl create configmap echo-port.py --from-file=echo-port.py -o yaml --dry-run=client | kubectl apply -f -
+kubectl create configmap ping-port.py --from-file=ping-port.py -o yaml --dry-run=client | kubectl apply -f -

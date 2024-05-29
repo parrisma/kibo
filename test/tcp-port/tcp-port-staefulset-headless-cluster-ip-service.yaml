@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tcp-port-ss-svc-cip
+  labels:
+    app: tcp-port-ss
+spec:
+  clusterIP: None
+  ports:
+    - port: 3142
+      targetPort: 3142
+      name: tcp-echo-port
+  selector:
+    app: tcp-port-ss

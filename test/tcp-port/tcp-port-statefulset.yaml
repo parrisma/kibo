@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tcp-port-set
+spec:
+  selector:
+    matchLabels:
+      app: tcp-port-ss # has to match .spec.template.metadata.labels
+  serviceName: tcp-port-set
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: tcp-port-ss # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+        - name: tcp-port-container-ss
+          image: python:3-alpine
+          command: ["sh"]
+          args:
+            - "-c"
+            - |
+              echo "..."
+              python /etc/echo-port.py
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 500m
+              memory: 250Mi
+          volumeMounts:
+            - name: echo-volume
+              mountPath: /etc/echo-port.py
+              subPath: echo-port.py
+              readOnly: true
+            - name: ping-volume
+              mountPath: /etc/ping-port.py
+              subPath: ping-port.py
+              readOnly: true
+      volumes: # As created by create-config-maps.bat
+        - name: echo-volume
+          configMap:
+            name: echo-port.py
+        - name: ping-volume
+          configMap:
+            name: ping-port.py

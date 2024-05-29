@@ -32,9 +32,10 @@ try:
     reply = s.recv(1024).decode('utf-8')
     print('[%s]' % (reply,), flush=True)
 except Exception as e:
-    print('Error [%s]' % (e,), flush=True)
+    print('Error [%s] from [%s]' % (e,s.gethostname()), flush=True)
     exit(1)
 finally:
     s.close()
     print('Ping server, all connections closed',
           flush=True) if VERBOSE else None
+    exit(0)
