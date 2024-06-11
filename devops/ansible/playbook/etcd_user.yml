@@ -1,0 +1,41 @@
+- hosts: etcd 
+  vars:
+    user_name: etcd
+    group_name: etcd
+    group_list:
+      - etcd
+      - sudo
+  vars_prompt:
+    - name: "user_password"
+      prompt: "Enter a password for new user {{user_name}}"
+      private: yes
+      encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it
+      confirm: yes
+      salt_size: 7
+  become: yes
+  tasks:
+
+    - name: Create a unix group called {{group_name}} 
+      group:
+        name: "{{group_name}}" 
+        state: present
+
+    - getent:
+        database: group
+      register: all_groups
+
+    - name: Create a user called {{user_name}} 
+      user:
+        name: "{{user_name}}" 
+        state: present
+        shell: /bin/bash
+        home: "/home/{{user_name}}"
+        password: "{{user_password}}"
+
+    - name: Add {{user_name}} user to {{group_list}} group
+      user:
+        name: "{{user_name}}"
+        groups: "{{item}}"
+        append: yes
+      when: "item in all_groups.ansible_facts.getent_group.keys() | list" 
+      loop: "{{group_list}}"

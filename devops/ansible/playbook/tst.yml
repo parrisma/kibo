@@ -1,0 +1,30 @@
+- hosts: etcd 
+  vars:
+    group_name: "docker"
+    group_list: ["docker","B"]
+    become: yes
+  tasks:
+
+  - getent:
+      database: group
+    register: all_groups 
+
+  -debug:
+     vars_prompt:
+       - name: "user_password"
+         prompt: "Enter a password for new user {{user_name}}"
+         private: yes
+         encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it
+         confirm: yes
+         salt_size: 7
+      msg: "{{user_password}}"
+
+  - debug:
+      msg: "{{ all_groups.ansible_facts.getent_group.keys() | list }}"
+
+  - debug:
+      msg: "{{group_list}}"
+
+  - debug:
+      msg: "ping"
+    when: "group_name in all_groups.ansible_facts.getent_group.keys() | list"
