@@ -24,6 +24,10 @@
         database: group
       register: all_groups
 
+    - getent:
+        database: passwd 
+      register: all_users
+
     - name: Create a user called {{user_name}} 
       user:
         name: "{{user_name}}" 
@@ -31,6 +35,7 @@
         shell: /bin/bash
         home: "/home/{{user_name}}"
         password: "{{user_password}}"
+      when: "user_name not in all_users.ansible_facts.getent_passwd.keys() | list" 
 
     - name: Add {{user_name}} user to {{group_list}} group
       user:
