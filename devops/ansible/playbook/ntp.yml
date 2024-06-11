@@ -1,0 +1,23 @@
+- hosts: ntp 
+  become: yes
+  tasks:
+    - name: Set time zone
+      shell: timedatectl set-timezone Asia/Hong_Kong
+
+    - name: Install NTP time service
+      apt:
+        name: ntp
+        update-cache: yes
+
+    - name: Stop NTP 
+      systemd:
+        name: ntp.service
+        state: stopped
+
+    - name: Sync ntp config
+      template: src=../template/ntp.conf dest=/etc/ntp.conf
+
+    - name: Start ntp 
+      systemd:
+        name: ntp.service
+        state: started

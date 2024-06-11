@@ -1,0 +1,7 @@
+[ntp]
+arther.local.node2
+
+[core]
+arther.local.node1
+arther.local.node3
+arther.local.node4

@@ -1,0 +1,23 @@
+- hosts: core 
+  become: yes
+  tasks:
+    - name: Install timesyncd 
+      apt:
+        name: systemd-timesyncd
+        update-cache: yes
+
+    - name: Set time zone
+      shell: timedatectl set-timezone Asia/Hong_Kong
+
+    - name: Stop timesyncd
+      systemd:
+        name: systemd-timesyncd.service
+        state: stopped
+
+    - name: Sync timesyncd config
+      template: src=../template/timesyncd.conf dest=/etc/systemd/timesyncd.conf
+
+    - name: Start timesyncd
+      systemd:
+        name: systemd-timesyncd.service
+        state: started
