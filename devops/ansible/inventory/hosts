@@ -5,3 +5,7 @@ arther.local.node2
 arther.local.node1
 arther.local.node3
 arther.local.node4
+
+[docker]
+arther.local.node3
+arther.local.node4
