@@ -1,10 +1,6 @@
-- hosts: etcd 
-  vars:
-    user_name: etcd
-    group_name: etcd
-    group_list:
-      - etcd
-      - sudo
+- hosts: "{{user_hosts}}"
+  vars_files:
+      - "{{user_config}}"
   vars_prompt:
     - name: "user_password"
       prompt: "Enter a password for new user {{user_name}}"
@@ -37,10 +33,22 @@
         password: "{{user_password}}"
       when: "user_name not in all_users.ansible_facts.getent_passwd.keys() | list" 
 
+    - name: Get groups for {{user_name}}
+      command: "groups {{user_name}}"
+      become: false
+      changed_when: false
+      register: user_groups
+
+    - name: Get groups for {{user_name}} as list 
+      set_fact:
+        user_grps: "{{user_groups.stdout.split(':')[1].split(' ')}}"
+
     - name: Add {{user_name}} user to {{group_list}} group
       user:
         name: "{{user_name}}"
         groups: "{{item}}"
         append: yes
-      when: "item in all_groups.ansible_facts.getent_group.keys() | list" 
+      when: 
+         - "item in all_groups.ansible_facts.getent_group.keys() | list" 
+         - "item not in user_grps"
       loop: "{{group_list}}"

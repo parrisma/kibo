@@ -1,0 +1,6 @@
+user_hosts: etcd
+user_name: etcd
+group_name: etcd
+group_list:
+  - etcd
+  - sudo
