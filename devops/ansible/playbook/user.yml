@@ -43,7 +43,7 @@
       set_fact:
         user_grps: "{{user_groups.stdout.split(':')[1].split(' ')}}"
 
-    - name: Add {{user_name}} user to {{group_list}} group
+    - name: Add {{user_name}} user to {{group_list}}
       user:
         name: "{{user_name}}"
         groups: "{{item}}"
@@ -52,3 +52,9 @@
          - "item in all_groups.ansible_facts.getent_group.keys() | list" 
          - "item not in user_grps"
       loop: "{{group_list}}"
+
+    - name: Remove {{user_name}} from unnecessary {{group_list}}
+      command: "gpasswd -d {{user_name}} {{item}}"
+      when: 
+         - "item in user_grps"
+      loop: "{{drop_list}}"

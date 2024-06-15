@@ -1,8 +1,7 @@
 - hosts: etcd 
   become: yes
   tasks:
-    - name: Run a hello world container 
+    - name: Run a hello world container
       community.docker.docker_container:
-        name: hello-world 
-        image: hello-world 
-
+        name: hello-world
+        image: hello-world

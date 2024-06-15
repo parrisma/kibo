@@ -1,10 +1,8 @@
-user_hosts: core
-user_name: ansible 
-group_name: ansible 
+user_hosts: node2 
+user_name: node2 
+group_name: node2 
 group_list:
-  - ansible 
   - sudo
-  - docker
   - fsusr
 drop_list:
   - cdrom

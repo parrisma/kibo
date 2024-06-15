@@ -1,0 +1,7 @@
+user_hosts: filesys 
+user_name: fsadm 
+group_name: fsadm 
+group_list:
+  - fsadm
+  - fsusr 
+  - sudo
