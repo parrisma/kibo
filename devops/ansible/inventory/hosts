@@ -1,10 +1,20 @@
 [ntp]
 arther.local.node2
 
+[all]
+arther.local.node1
+arther.local.node2
+arther.local.node3
+arther.local.node4
+arther.local.node5
+arther.local.node6
+
 [core]
 arther.local.node1
 arther.local.node3
 arther.local.node4
+arther.local.node5
+arther.local.node6
 
 [docker]
 arther.local.node3
@@ -15,9 +25,19 @@ arther.local.node3
 arther.local.node4
 
 [filesys]
+arther.local.node3
 arther.local.node4
+arther.local.node5
+arther.local.node6
+
+[nas]
+arther.local.node3
+arther.local.node4
+arther.local.node5
+arther.local.node6
 
 [nvme]
+arther.local.node3
 arther.local.node4
 
 [node1]

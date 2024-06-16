@@ -1,0 +1,68 @@
+- name: Mount NAS device 
+  hosts: nas 
+  become: true
+  vars:
+      nfs_server: arther.local.nas
+      mnt_dir: nas01
+
+  tasks:
+    - name: Get user info
+      shell: id fsadm | awk '{print $1}'
+      register: user_info
+      changed_when: false
+
+    - name: fsadm User check
+      fail:
+        msg: "User [fsadm] must exist and have UID = 2000"
+      when: "'2000' not in user_info.stdout_lines[0]"
+
+    - name: Get fsdam group info
+      command: getent group fsadm
+      register: group_info
+      changed_when: false
+
+    - name: fsadm group check
+      fail:
+        msg: "Group [fsadm] must exist and have GID = 2000"
+      when: "'2000' not in group_info.stdout_lines[0]"
+      changed_when: false
+
+    - name: Get fsusr group info
+      command: getent group fsusr
+      register: group_info
+      changed_when: false
+
+    - name: fsusr group check
+      fail:
+        msg: "Group [fsusr] must exist and have GID = 2001"
+      when: "'2001' not in group_info.stdout_lines[0]"
+      changed_when: false
+
+    - name: Install cifs-utils
+      apt:
+        name: cifs-utils
+        state: present
+
+    - name: Create the local mount point 
+      file:
+        path: "/{{mnt_dir}}/nas01"
+        owner: root 
+        group: root 
+        mode: "500"
+        state: directory
+
+    - name: Mount NFS drive
+      mount:
+        src: "{{nfs_server}}:/volume1/Elrond"
+        path: "/mnt/{{mnt_dir}}"
+        fstype: nfs
+        opts: "defaults"
+        state: mounted
+
+    - name: Set the permssions of the mounted nas volume user=fsadm and group=fsusr 
+      file:
+        path: "/{{mnt_dir}}/nas01"
+        owner: fsadm
+        group: fsusr
+        mode: "770"
+        state: directory

@@ -1,0 +1,7 @@
+user_hosts: filesys 
+user_name: fsusr 
+user_uid: 2001
+group_name: fsusr
+group_gid: 2001
+group_list:
+  - fsusr

@@ -11,10 +11,20 @@
   become: yes
   tasks:
 
+    - name: Create a unix group called {{group_name}} with group id {{group_gid}} 
+      group:
+        name: "{{group_name}}" 
+        gid: "{{group_gid}}" 
+        state: present
+      when: 
+         - "group_gid is defined"
+
     - name: Create a unix group called {{group_name}} 
       group:
         name: "{{group_name}}" 
         state: present
+      when: 
+         - "group_gid is not defined"
 
     - getent:
         database: group
@@ -31,7 +41,21 @@
         shell: /bin/bash
         home: "/home/{{user_name}}"
         password: "{{user_password}}"
-      when: "user_name not in all_users.ansible_facts.getent_passwd.keys() | list" 
+      when: 
+         - "user_uid is not defined"
+         - "user_name not in all_users.ansible_facts.getent_passwd.keys() | list" 
+
+    - name: Create a user called {{user_name}} with user id {{user_uid}} 
+      user:
+        name: "{{user_name}}" 
+        uid: "{{user_uid}}"
+        state: present
+        shell: /bin/bash
+        home: "/home/{{user_name}}"
+        password: "{{user_password}}"
+      when: 
+         - "user_uid is defined"
+         - "user_name not in all_users.ansible_facts.getent_passwd.keys() | list" 
 
     - name: Get groups for {{user_name}}
       command: "groups {{user_name}}"
@@ -53,8 +77,9 @@
          - "item not in user_grps"
       loop: "{{group_list}}"
 
-    - name: Remove {{user_name}} from unnecessary {{group_list}}
+    - name: Remove {{user_name}} from unnecessary {{drop_list}}
       command: "gpasswd -d {{user_name}} {{item}}"
       when: 
+         - "drop_list is defined"
          - "item in user_grps"
       loop: "{{drop_list}}"

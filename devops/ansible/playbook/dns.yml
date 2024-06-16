@@ -1,0 +1,66 @@
+- name: Set DNS using Network Manager
+  hosts: all 
+  vars:
+    dns_ip: 192.168.70.252
+  become: true
+
+  tasks:
+    - name: Install DNS Utils 
+      apt:
+        name: dnsutils
+        state: present
+
+    - name: Get devices to update DNS for.
+      shell: "nmcli device | grep -i ' connected' | awk '{print $1,$2}' | grep -i -e ethernet -e wifi | awk '{print $1}'"
+      register: network_devices
+      changed_when: false
+
+    - name: Create List of DNS devices for update 
+      set_fact:
+        device_list: "{{ network_devices.stdout_lines }}"
+      changed_when: false
+
+    - name: Network Devices in scope for DNS update
+      debug:
+        msg: "[{{item}}]" 
+      with_items: "{{device_list}}"
+      changed_when: false
+
+    - name: Get current DNS setting for device
+      shell: "nmcli device show {{item}}"
+      register: device_detail_list
+      with_items: "{{device_list}}"
+      changed_when: false
+
+    - name: Add device to action list if DNS is not set to the target DNS {{dns_ip}} 
+      set_fact:
+        devices_to_update: "{{item.stdout_lines[5].split(':')[1] | trim}}"
+      when:
+        - "item is not match('.*' + dns_ip + '.*')" 
+      with_items: "{{device_detail_list.results}}"
+      changed_when: false
+
+    - name: Update DNS for devices identified as having DNS different to target DNS of {{dns_ip}} 
+      shell: "nmcli con mod '{{item}}' ipv4.dns '{{dns_ip}}'"
+      with_items: "{{devices_to_update}}"
+      register: res
+      when: 
+        - devices_to_update is defined
+
+    - name: Update DNS to ignore Auto DNS 
+      shell: "nmcli con mod '{{item}}' ipv4.ignore-auto-dns yes"
+      with_items: "{{devices_to_update}}"
+      register: res
+      when: 
+        - devices_to_update is defined
+        - res.results[0].rc == 0 
+
+    - name: Restart the Network Manager 
+      service:
+        name: "NetworkManager"
+        state: restarted
+      with_items: "{{devices_to_update}}"
+      register: res
+      when: 
+        - devices_to_update is defined
+        - res.results[0].rc == 0
