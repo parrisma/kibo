@@ -1,0 +1,15 @@
+user_hosts: node6 
+user_name: node6
+group_name: node6 
+group_list:
+  - sudo
+  - fsusr
+drop_list:
+  - cdrom
+  - games
+  - audio
+  - gpio
+  - i2c
+  - video
+  - dialout
+  - plugdev
