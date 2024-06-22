@@ -1,11 +1,19 @@
 {
     "cSpell.words": [
         "addext",
+        "Bitnami",
         "certificaterequest",
+        "Elrond",
+        "gethostname",
         "keycloak",
+        "kubeconfig",
+        "Mikro",
         "nginxdemos",
         "noout",
         "oneline",
-        "selfsigned"
+        "parri",
+        "scylladb",
+        "selfsigned",
+        "statefulset"
     ]
 }

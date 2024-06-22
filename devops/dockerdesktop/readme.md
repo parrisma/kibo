@@ -26,3 +26,8 @@ Run from windows power shell started as admin
 ## Local mounts
 
 ```/run/desktop/mnt/host/c/Users/parri```
+
+## Shell into WSL
+
+```wsl --distribution docker-desktop```
+```cd /mnt``` to find the actual WSL storage of the Docker Desktop volumes

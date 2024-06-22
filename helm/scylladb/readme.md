@@ -44,3 +44,5 @@ and you should see (after a short wait for starting and joining)
 1. Find the WSL IP, open an Ubuntu shell on WSL then `ip a | grep eth0`
 1. You can then connect via `cqlsh <ip> <port>` where IP is returned from above command and port is the port you defined in the NodePort service
 1. e.g. `cqlsh 172.26.166.180 32000`
+
+```kubectl exec -n scylla -it <pod> -- cqlsh``

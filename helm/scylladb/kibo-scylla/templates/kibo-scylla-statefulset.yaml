@@ -1,27 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: scylla
+  name: {{ .Values.scylla.statefulset.setName }}
   labels:
-    app: scylla
+    app: {{ .Values.scylla.statefulset.setName }}
 spec:
-  serviceName: scylla-svc
-  replicas: 3
+  serviceName: {{ .Values.scylla.statefulset.serviceName }}
+  replicas: {{ .Values.scylla.statefulset.replicas }}
   selector:
     matchLabels:
-      app: scylla
+      app: {{ .Values.scylla.statefulset.setName }}
   template:
     metadata:
       labels:
-        app: scylla
+        app: {{ .Values.scylla.statefulset.setName }}
     spec:
-      sysctls:
-      - "fs.aio-max-nr=1048576"
       containers:
         - name: scylla
-          image: scylladb/scylla:5.2.0
+          image: {{ .Values.scylla.statefulset.image }}:{{ .Values.scylla.statefulset.tag }}
           imagePullPolicy: IfNotPresent
-          args: ["--seeds", "scylla-0.scylla-svc.kibo.svc.cluster.local", "--smp", "1"] # Format <setname>-n.<service-name>.<namespace>.svc.cluster.local
+          args: ["--seeds", "{{ .Values.scylla.statefulset.setName }}-0.{{ .Values.scylla.statefulset.serviceName }}.{{ .Release.Namespace }}.svc.cluster.local", "--smp", "1"] # Format <setname>-n.<service-name>.<namespace>.svc.cluster.local
           ports:
             - containerPort: 7000
               name: intra-node
@@ -85,9 +83,9 @@ spec:
     - metadata:
         name: scylla-data-volume
         annotations:
-          volume.beta.kubernetes.io/storage-class: hostpath
+          volume.beta.kubernetes.io/storage-class: {{ .Values.scylla.storage.class }}
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: 1Gi
+            storage: {{ .Values.scylla.storage.size }}

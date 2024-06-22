@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibo-scylla-svc-1 # Each pod in the statefulset has its own service
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    statefulset.kubernetes.io/pod-name: scylla-set-0
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 9042

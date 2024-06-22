@@ -11,4 +11,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "{{ .Values.scylla.host_mount_path}}"
+    path: {{ .Values.scylla.hostMountPath}}

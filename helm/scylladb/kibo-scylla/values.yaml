@@ -10,6 +10,12 @@ domain: kibo.org
 
 scylla:
   statefulset:
-    image: scylladb
-    tag: scylla:5.2.0
-  host_mount_path: /run/desktop/mnt/scylla # Docker Desktop specific path
+    setName: scylla-set
+    serviceName: scylla-svc
+    replicas: 3
+    image: scylladb/scylla
+    tag: 5.2.0
+  hostMountPath: /run/desktop/mnt/scylla # Docker Desktop specific path
+  storage:
+    class: hostpath
+    size: 1Gi
