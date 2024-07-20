@@ -1,5 +1,6 @@
 # Kubernetes Secrets that contaion sensitive data
 **/*cert*.yaml
+**/*nocommit*
 
 # tls
 **/*.crt
