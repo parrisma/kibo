@@ -1,0 +1,16 @@
+{
+  "CN": "vault-example",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "HK",
+      "L": "Hong Kong",
+      "O": "Kubernetes",
+      "OU": "Vault",
+      "ST": "HK"
+    }
+  ]
+}

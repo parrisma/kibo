@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vault-pv
+  labels:
+    type: local
+spec:
+  storageClassName: local-nas-storage 
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/nas01"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: nas01
+              operator: In
+              values:
+                - "true"
+
